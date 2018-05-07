@@ -14,11 +14,19 @@
 
 1.Package the module demo to the lib forder in workflow-demo and run the Main class.
 
-**Forexample:**
+**For example:**
 
-I want to user the kn-module-demo and wps-module-demo.
+I want to use the kn-module-demo and wps-module-demo.
 
 Step:
+
+- Create a forlder named "process" in root of "D" disk and copy the workflow tempalte
+to "process" in "D" disk from the "process" folder in project.
+
+![avatar](docs/微信截图_20180507080710.png)
+
+![avatar](docs/微信截图_20180507080815.png)
+
 - Use "mvn package" command to generate the jar and rename to
 "kn-moudule-demo-0.0.1.jar" or "wps-module-demo-0.0.1.jar"
 
