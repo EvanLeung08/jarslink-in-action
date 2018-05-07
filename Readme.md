@@ -1,6 +1,6 @@
-# **Guideline**
+# **GUIDELINE**
 
-## **Module**
+## **MODULE**
 
 > workflow-demo The main module used to load jar
 
@@ -10,13 +10,14 @@
 
 ***
 
-## **How to use**
+## **HOW TO USE**
 
 1.Package the module demo to the lib forder in workflow-demo and run the Main class.
 
-**For example:**
+**EXAMPLE:**
 
-I want to use the kn-module-demo and wps-module-demo.
+Use "kn-module-demo" and "wps-module-demo" to handle
+the specific business logic.
 
 Step:
 
