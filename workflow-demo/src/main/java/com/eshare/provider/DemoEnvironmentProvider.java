@@ -7,7 +7,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 /**
  * @author liangyh
  */
-public class TestEnvironmentProvider implements EnvironmentProvider {
+public class DemoEnvironmentProvider implements EnvironmentProvider {
     private SessionFactory sessionFactory;
     private PlatformTransactionManager platformTransactionManager;
 

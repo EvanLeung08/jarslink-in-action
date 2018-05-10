@@ -13,7 +13,7 @@
         </property>
     </bean>
 
-    <bean class="com.eshare.provider.TestEnvironmentProvider">
+    <bean class="com.eshare.provider.DemoEnvironmentProvider">
         <property name="sessionFactory" ref="sessionFactory" />
         <property name="platformTransactionManager" ref="transactionManager" />
 
