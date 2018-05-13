@@ -1,34 +1,31 @@
 package com.eshare.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * FileUploadController
+ * demo控制器
  *
  * @author liangyh
  * @email 10856214@163.com
  * @date 2018/5/10
  */
 @Controller
-@RequestMapping("/demo")
 public class DemoController {
 
     private static String UPLOADED_FOLDER = "D://upload//lib//";
 
-    @GetMapping("")
-    public String upload() {
-        return "upload";
+    @GetMapping("/index")
+    public String index() {
+        return "index";
     }
 
     @GetMapping("/calendar")
@@ -61,7 +58,7 @@ public class DemoController {
                                    RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-            return "redirect:uploadStatus";
+            return "redirect:/demo/uploadStatus";
         }
 
         try {
@@ -83,6 +80,6 @@ public class DemoController {
 
     @GetMapping("/uploadStatus")
     public String uploadStatus() {
-        return "uploadStatus";
+        return "forward:/demo/index";
     }
 }
