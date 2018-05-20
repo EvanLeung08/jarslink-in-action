@@ -23,7 +23,7 @@
 		<dependency>
 			<groupId>com.alipay.jarslink</groupId>
 			<artifactId>jarslink-api</artifactId>
-			<version>1.5.0.20171107</version>
+			<version>1.6.1.20180301</version>
 		</dependency>
 
 		<!-- demo start  -->
