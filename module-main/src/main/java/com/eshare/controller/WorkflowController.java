@@ -1,5 +1,7 @@
 package com.eshare.controller;
 
+import com.eshare.service.FileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +24,8 @@ import java.nio.file.Paths;
 @Controller
 public class WorkflowController {
 
-    private static String UPLOADED_FOLDER = "D://upload//lib//";
+    @Autowired
+    private FileService fileService;
 
     @GetMapping("/index")
     public String index() {
@@ -58,26 +61,15 @@ public class WorkflowController {
     public String singleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+            redirectAttributes.addFlashAttribute("message", "Please select taobao file to upload");
             return "redirect:/workflow/uploadStatus";
         }
+        //上传文件
+        fileService.uploadFile(file, redirectAttributes);
 
-        try {
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            //获取当前类加载器上下文真实路径
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            Files.write(path, bytes);
-
-            redirectAttributes.addFlashAttribute("message",
-                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return "redirect:/workflow/uploadStatus";
+        return "redirect:/workflow/index";
     }
+
 
     @GetMapping("/uploadStatus")
     public String uploadStatus() {

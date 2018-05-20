@@ -1,7 +1,10 @@
 package com.eshare.scheduler;
 
 import com.alipay.jarslink.api.ModuleConfig;
+import com.alipay.jarslink.api.ModuleLoader;
+import com.alipay.jarslink.api.ModuleManager;
 import com.alipay.jarslink.api.impl.AbstractModuleRefreshScheduler;
+import com.eshare.lang.Const;
 import com.eshare.utils.JarFileUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -16,61 +19,127 @@ import java.util.List;
 @Slf4j
 public class ModuleRefreshSchedulerImpl extends AbstractModuleRefreshScheduler {
 
-    private static String UPLOADED_FOLDER = "D://upload//lib//";
+    public ModuleRefreshSchedulerImpl(ModuleLoader moduleLoader, ModuleManager moduleManager) {
+        super.setModuleLoader(moduleLoader);
+        super.setModuleManager(moduleManager);
+    }
 
     @Override
     public List<ModuleConfig> queryModuleConfigs() {
         return buildModuleConfig();
     }
 
-    public static List<ModuleConfig> buildModuleConfig() {
+    private static List<ModuleConfig> buildModuleConfig() {
         List<ModuleConfig> moduleConfigs = new ArrayList<ModuleConfig>();
-        moduleConfigs.add(buildAModuleConfig());
-        moduleConfigs.add(buildBModuleConfig());
+        moduleConfigs.add(buildWorkflowTaobaoModuleConfig());
+        moduleConfigs.add(buildWorkflowTencentModuleConfig());
+        moduleConfigs.add(buildCacheModuleConfig());
         moduleConfigs.removeAll(Collections.singleton(null));
         return moduleConfigs.isEmpty() ? null : moduleConfigs;
     }
-
-    public static ModuleConfig buildAModuleConfig() {
+    /**
+     * 构建工作流taobao模块配置
+     * @return
+     */
+    private static ModuleConfig buildWorkflowTaobaoModuleConfig() {
         try {
             ModuleConfig moduleConfig = new ModuleConfig();
-            File jarFile = JarFileUtils.getFile(UPLOADED_FOLDER,"workflow-module-a*.jar");
+            File jarFile = JarFileUtils.getSingleFile(Const.UPLOADED_FOLDER,"workflow-module-taobao*.jar");
             URL demoModule = JarFileUtils.toURL(jarFile);
             String jarVersion = JarFileUtils.getJarVersion(jarFile);
             if (demoModule == null) {
                 return null;
             }
-            moduleConfig.setName("a");
+            moduleConfig.setName("workflow-module-taobao");
             moduleConfig.setEnabled(true);
             moduleConfig.setVersion(jarVersion);
             moduleConfig.setProperties(ImmutableMap.of("svnPath", new Object()));
             moduleConfig.setModuleUrl(ImmutableList.of(demoModule));
-            moduleConfig.setOverridePackages(ImmutableList.of("com.eshare.workflow.a"));
+            moduleConfig.addScanPackage("com.eshare.workflow.taobao");
             return moduleConfig;
         } catch (Exception e) {
-            log.debug("构建A模块配置异常{}",e);
+            log.debug("构建工作流Taobao模块配置异常{}",e);
         }
         return null;
     }
 
-    public static ModuleConfig buildBModuleConfig() {
+    /**
+     * 构建工作流tencent模块配置
+     * @return
+     */
+    private static ModuleConfig buildWorkflowTencentModuleConfig() {
         try {
             ModuleConfig moduleConfig = new ModuleConfig();
-            File jarFile = JarFileUtils.getFile(UPLOADED_FOLDER,"workflow-module-b*.jar");
+            File jarFile = JarFileUtils.getSingleFile(Const.UPLOADED_FOLDER,"workflow-module-tencent*.jar");
             URL demoModule = JarFileUtils.toURL(jarFile);
             String jarVersion = JarFileUtils.getJarVersion(jarFile);
             if (demoModule == null) {
                 return null;
             }
-            moduleConfig.setName("b");
+            moduleConfig.setName("workflow-module-tencent");
             moduleConfig.setEnabled(true);
             moduleConfig.setVersion(jarVersion);
             moduleConfig.setProperties(ImmutableMap.of("svnPath", new Object()));
             moduleConfig.setModuleUrl(ImmutableList.of(demoModule));
-            moduleConfig.setOverridePackages(ImmutableList.of("com.eshare.workflow.b"));
+            moduleConfig.addScanPackage("com.eshare.workflow.tencent");
             return moduleConfig;
         } catch (Exception e) {
-            log.debug("构建B模块配置异常{}",e);
+            log.debug("构建工作流tencent模块配置异常{}",e);
+        }
+        return null;
+    }
+
+    /**
+     * 构建缓存模块配置
+     * @return
+     */
+    private static ModuleConfig buildCacheModuleConfig() {
+        try {
+            ModuleConfig moduleConfig = new ModuleConfig();
+            //默认加载内存缓存模块
+            File jarFile = JarFileUtils.getSingleFile(Const.UPLOADED_FOLDER,"cache-module-memory*.jar");
+            URL demoModule = JarFileUtils.toURL(jarFile);
+            String jarVersion = JarFileUtils.getJarVersion(jarFile);
+            if (demoModule == null) {
+                return null;
+            }
+            moduleConfig.setName("cache-module");
+            moduleConfig.setEnabled(true);
+            moduleConfig.setVersion(jarVersion);
+            moduleConfig.setProperties(ImmutableMap.of("svnPath", new Object()));
+            moduleConfig.setModuleUrl(ImmutableList.of(demoModule));
+            moduleConfig.addScanPackage("com.eshare.cache");
+            return moduleConfig;
+        } catch (Exception e) {
+            log.debug("构建缓存模块配置异常{}",e);
+        }
+        return null;
+    }
+
+    /**
+     * 按构件缓存模块配置
+     * @param module 模块名称
+     * @param version 模块版本
+     * @return
+     */
+    public static ModuleConfig buildCacheModuleConfig(String module,String version) {
+        try {
+            ModuleConfig moduleConfig = new ModuleConfig();
+            File jarFile = JarFileUtils.getSingleFile(Const.UPLOADED_FOLDER,String.format("%s-%s.jar", module, version));
+            URL demoModule = JarFileUtils.toURL(jarFile);
+            String jarVersion = JarFileUtils.getJarVersion(jarFile);
+            if (demoModule == null) {
+                return null;
+            }
+            moduleConfig.setName("cache-module");
+            moduleConfig.setEnabled(true);
+            moduleConfig.setVersion(jarVersion);
+            moduleConfig.setProperties(ImmutableMap.of("svnPath", new Object()));
+            moduleConfig.setModuleUrl(ImmutableList.of(demoModule));
+            moduleConfig.addScanPackage("com.eshare.cache");
+            return moduleConfig;
+        } catch (Exception e) {
+            log.debug("构建缓存模块配置异常{}",e);
         }
         return null;
     }

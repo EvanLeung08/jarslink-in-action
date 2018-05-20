@@ -19,14 +19,14 @@ import java.net.URL;
 public class JarFileUtils {
 
 
-    public static File getFile(String parentPath,String fileNamePattern) {
+    public static File getSingleFile(String parentPath, String fileNamePattern) {
         File dir = new File(parentPath);
         FileFilter fileFilter = new WildcardFileFilter(fileNamePattern);
         File[] files = dir.listFiles(fileFilter);
-        return files[0];
+        return null==files?null:files[0];
     }
 
-    public static URL toURL(File file){
+    public static URL toURL(File file) {
         try {
             return FileUtils.toURLs(new File[]{file})[0];
         } catch (IOException e) {
@@ -35,13 +35,12 @@ public class JarFileUtils {
         return null;
     }
 
-    public static String getJarVersion(File file){
-        if(file == null){
+    public static String getJarVersion(File file) {
+        if (file == null) {
             return StringUtils.EMPTY;
         }
-       return  file.getName().substring(file.getName().lastIndexOf("-"),file.getName().lastIndexOf(".jar"));
+        return file.getName().substring(file.getName().lastIndexOf("-") + 1, file.getName().lastIndexOf(".jar"));
     }
-
 
 
 }

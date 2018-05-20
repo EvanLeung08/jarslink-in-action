@@ -1,10 +1,15 @@
 package com.eshare.config;
 
+import com.alipay.jarslink.api.ModuleLoader;
+import com.alipay.jarslink.api.ModuleManager;
+import com.alipay.jarslink.api.ModuleService;
 import com.alipay.jarslink.api.impl.ModuleLoaderImpl;
 import com.alipay.jarslink.api.impl.ModuleManagerImpl;
+import com.alipay.jarslink.api.impl.ModuleServiceImpl;
 import com.eshare.scheduler.ModuleRefreshSchedulerImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 /**
  * Created by liangyh on 2018/4/2.
@@ -15,48 +20,42 @@ public class BeanConfig {
 
     /**
      * 初始化模块加载器
+     * @return
      */
-    @Bean(name = "moduleLoader")
-    public ModuleLoaderImpl generateLoaderImpl() {
+    @Bean
+    public ModuleLoader moduleLoader() {
         return new ModuleLoaderImpl();
     }
-
     /**
      * 初始化模块管理器
      *
      * @return
      */
-    @Bean(name = "moduleManager")
-    public ModuleManagerImpl generateManagerImpl() {
+    @Bean
+    public ModuleManager moduleManager() {
         return new ModuleManagerImpl();
     }
+
+
+    @Bean
+    @DependsOn(value= {"moduleLoader","moduleManager"})
+    public ModuleService moduleService(ModuleLoader moduleLoader, ModuleManager moduleManager) {
+        ModuleServiceImpl moduleService = new ModuleServiceImpl();
+        moduleService.setModuleLoader(moduleLoader);
+        moduleService.setModuleManager(moduleManager);
+        return moduleService;
+    }
+
 
     /**
      * 初始化模块调度器
      *
      * @return
      */
-    @Bean(name = "moduleRefreshScheduler")
-    public ModuleRefreshSchedulerImpl generateSchedulerImpl() {
-        ModuleRefreshSchedulerImpl schedulerImpl = new ModuleRefreshSchedulerImpl();
-        schedulerImpl.setModuleLoader(generateLoaderImpl());
-        schedulerImpl.setModuleManager(generateManagerImpl());
-        return schedulerImpl;
+    @Bean
+    @DependsOn(value= {"moduleService"})
+    public ModuleRefreshSchedulerImpl moduleRefreshSchedulerImpl(ModuleLoader moduleLoader, ModuleManager moduleManager) {
+        return new ModuleRefreshSchedulerImpl(moduleLoader, moduleManager);
     }
-
-
-/*
-    *//**
-     * 初始化预审核动作处理器
-     * @return
-     *//*
-    @Bean(name = "preApprovalActionHandler")
-    public PreApprovalActionHandler generatePreApprovalActionHandler() {
-        PreApprovalActionHandler handler = new PreApprovalActionHandler();
-        handler.setModuleManager(generateManagerImpl());
-        handler.setModuleLoader(generateLoaderImpl());
-        return handler;
-    }*/
-
 
 }

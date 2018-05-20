@@ -11,14 +11,6 @@
 	<name>cache-module-memory</name>
 	<description>Demo project for Spring Boot</description>
 
-	<properties>
-		<slf4j.version>1.7.7</slf4j.version>
-		<apache.commons.lang.version>2.6</apache.commons.lang.version>
-		<apache.commons.collections.version>3.2.1</apache.commons.collections.version>
-		<joda.time.version>2.3</joda.time.version>
-		<jackson.version>2.4.1</jackson.version>
-	</properties>
-
 	<dependencies>
 		<!-- jarslink依赖包 -->
 		<dependency>
@@ -35,16 +27,31 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
-		<!-- example -->
+		<!-- cache common -->
 		<dependency>
 			<groupId>com.eshare</groupId>
 			<artifactId>cache-module-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>2.0.1.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
-		<finalName>store-memory</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 
 

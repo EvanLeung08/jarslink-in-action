@@ -26,18 +26,18 @@
     </bean>
 
 
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="url"
-                  value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8" />
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="username" value="root" />
-        <property name="password" value="root" />
-        <property name="minIdle" value="10" />
-        <property name="maxActive" value="20" />
-        <property name="maxWait" value="1000" />
-        <property name="removeAbandonedTimeout" value="60" />
-        <property name="removeAbandoned" value="true" />
-        <property name="logAbandoned" value="true" />
+    <bean id="dataSource" class="org.h2.jdbcx.JdbcConnectionPool"
+          destroy-method="dispose">
+        <constructor-arg>
+            <bean class="org.h2.jdbcx.JdbcDataSource">
+                <!-- 内存模式 -->
+                <property name="URL" value="jdbc:h2:mem:test" />
+                <!-- 文件模式 -->
+                <!-- <property name="URL" value="jdbc:h2:testRestDB" /> -->
+                <property name="user" value="sa" />
+                <property name="password" value="sa" />
+            </bean>
+        </constructor-arg>
     </bean>
 
     <bean id="sessionFactory"
@@ -52,7 +52,7 @@
 
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
                 <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.jdbc.batch_size">100</prop>
