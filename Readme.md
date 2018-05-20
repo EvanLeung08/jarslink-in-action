@@ -46,7 +46,7 @@ default:http://localhost:8080/
 - 将项目process目录下的流程common_risk_approval_process.uflo.xml放在D:\upload\process目录下
 
 
-![avatar](docs/微信截图_20180507080815.png)
+![avatar](docs/微信截图_20180521002301.png)
 
 - 使用Mave命令 "mvn package" 分别对workflow-module-taobao和workflow-module-tencent两个模块打包，
 生成workflow-module-taobao-0.0.1.jar和workflow-module-tencent-0.0.1.jar文件
