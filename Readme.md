@@ -101,3 +101,40 @@ taobao模块的approval动作去处理
 ***
 
 ### **情景二环境部署**
+
+**情景说明:**
+
+本demo通过cache-module-memory、cache-module-mongodb、cache-module-redis 几个模块模拟在线切无感知切换底层缓存框架
+
+**使用步骤:**
+
+- 使用Mave命令 "mvn package" 分别对cache-module-memory、cache-module-mongodb和cache-module-redis三个模块打包，
+  生成cache-module-memory-0.0.1.jar、cache-module-mongodb-0.0.1.jar和cache-module-redis-0.0.1.jar三个JAR包
+  
+![avatar](docs/微信截图_20180521232457.png)
+![avatar](docs/微信截图_20180521233013.png)
+
+- 运行 "ModuleApplication"
+
+- 输入http://localhost:8080/会看到如下界面
+
+![avatar](docs/微信截图_20180520234008.png)
+
+- 选择场景二，进入演示场景，会显示如下界面:
+
+![avatar](docs/微信截图_20180521233617.png)
+
+- 分别上传之前打包好的模块包cache-module-memory-0.0.1.jar、cache-module-mongodb-0.0.1.jar和cache-module-redis-0.0.1.jar，上传成功后在界面会
+看到成功提示，并且在D:\upload\lib目录下会看到我们上传的Jar包
+
+![avatar](docs/微信截图_20180521233942.png)
+![avatar](docs/微信截图_20180521234102.png)
+
+- 点击缓存管理，会看到如下图界面，这时候我们可以设置我们的缓存key和value，并且可以通过key进行查询操作:
+
+![avatar](docs/微信截图_20180521235200.png)
+![avatar](docs/微信截图_20180521235256.png)
+
+- 点击缓存切换，输入模块名称和版本号，可以在线无感知切换底层缓存框架，这里模拟缓存从memory切换成redis存储:
+
+![avatar](docs/微信截图_20180521235628.png)

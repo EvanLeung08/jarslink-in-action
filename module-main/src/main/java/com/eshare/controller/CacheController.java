@@ -54,17 +54,12 @@ public class CacheController {
     public String singleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Please select taobao file to upload");
-            return "redirect:/cache/uploadStatus";
+            redirectAttributes.addFlashAttribute("message", "请选择一个模块进行上传");
+            return "redirect:/cache/index";
         }
         //上传文件
         fileService.uploadFile(file, redirectAttributes);
-        return "redirect:/cache/uploadStatus";
-    }
-
-    @GetMapping("/uploadStatus")
-    public String uploadStatus() {
-        return "forward:/cache/index";
+        return "redirect:/cache/index";
     }
 
 
