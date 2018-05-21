@@ -24,20 +24,13 @@
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
-
-
-    <bean id="dataSource" class="org.h2.jdbcx.JdbcConnectionPool"
-          destroy-method="dispose">
-        <constructor-arg>
-            <bean class="org.h2.jdbcx.JdbcDataSource">
-                <!-- 内存模式 -->
-                <property name="URL" value="jdbc:h2:mem:test" />
-                <!-- 文件模式 -->
-                <!-- <property name="URL" value="jdbc:h2:testRestDB" /> -->
-                <property name="user" value="sa" />
-                <property name="password" value="sa" />
-            </bean>
-        </constructor-arg>
+    <!-- 使用h2内存模式代替真实数据库 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:mem:test"/>
+        <property name="username" value="sa"/>
+        <property name="password" value="sa"/>
+        <property name="validationQuery"  value="SELECT NOW() FROM DUAL"/>
     </bean>
 
     <bean id="sessionFactory"
@@ -53,7 +46,7 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
-                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.jdbc.batch_size">100</prop>
             </props>
