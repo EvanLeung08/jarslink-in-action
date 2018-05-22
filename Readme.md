@@ -1,5 +1,15 @@
 # **用户指南**
 
+## **Quickstart 快速开始**
+
+```java
+git clone https://github.com/Evan43789596/jarslink-in-action.git
+cd jarslink-in-action/module-main/
+mvn clean package
+java -jar target/module-main-0.0.1-SNAPSHOT.jar
+```
+Let's start: http://localhost:8080
+***
 ## **Demo说明**
 >本Demo基于简单的案例引导大家举一反三学会使用JarsLink用于日常工作，本教程目前提供如下情景Demo演示：
 - (情景一)工作流业务特性逻辑动态处理:模拟消费金融相似的风控审核流程，基于不同的产品，路由到对应产品的模块Jar去执行特性逻辑
@@ -138,3 +148,7 @@ taobao模块的approval动作去处理
 - 点击缓存切换，输入模块名称和版本号，可以在线无感知切换底层缓存框架，这里模拟缓存从memory切换成redis存储:
 
 ![avatar](docs/微信截图_20180521235628.png)
+
+### **工作原理**
+
+![avatar](docs/缓存.png)
