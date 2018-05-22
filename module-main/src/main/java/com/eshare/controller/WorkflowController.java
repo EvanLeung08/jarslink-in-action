@@ -27,6 +27,20 @@ public class WorkflowController {
     @Autowired
     private FileService fileService;
 
+    @PostMapping("/upload")
+    public String singleFileUpload(@RequestParam("file") MultipartFile file,
+                                   RedirectAttributes redirectAttributes) {
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "请选择一个模块进行上传");
+            return "redirect:/workflow/index";
+        }
+        //上传文件
+        fileService.uploadFile(file, redirectAttributes);
+
+        return "redirect:/workflow/index";
+    }
+
+
     @GetMapping("/index")
     public String index() {
         return "workflow_index";
@@ -55,24 +69,5 @@ public class WorkflowController {
     @GetMapping("/todo")
     public String todo() {
         return "forward:/uflo/todo";
-    }
-
-    @PostMapping("/upload")
-    public String singleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
-        if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "请选择一个模块进行上传");
-            return "redirect:/workflow/index";
-        }
-        //上传文件
-        fileService.uploadFile(file, redirectAttributes);
-
-        return "redirect:/workflow/index";
-    }
-
-
-    @GetMapping("/uploadStatus")
-    public String uploadStatus() {
-        return "forward:/index";
     }
 }
