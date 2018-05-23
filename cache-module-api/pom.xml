@@ -5,7 +5,7 @@
 
 	<groupId>com.eshare</groupId>
 	<artifactId>cache-module-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>cache-module-api</name>
